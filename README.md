@@ -225,32 +225,33 @@ Corner Problem 是一个典型的搜索问题，吃豆人需要经过四个角�
 
 ### 2.1 异常检测（Anomaly detection）
 
+本章节希望你完成能够识别欺诈性的信用卡交易，数据集下载的 [Google driver](https://drive.google.com/file/d/1T8AzSyNNYMPshcPaVPndSPrCBomhc2Uy/view?usp=sharing) 地址，希望你可以训练一个机器学习模型准确识别出风险顾客，进而避免公司的成本损失。
+
+- 数据说明，由于脱敏对特征名称进行隐藏，其中 class 是标签，发生欺诈为 1、否则为 0
+- 数据范围，为两天内发生的交易，在 284,807 中有 492 欺诈，也就是数据集高度不平衡
+- 评价指标，AUC，PR
+
+> [!TIP]
+>
+> 可以将其看作不平衡的分类任务，也可以将其看作是**异常检测**任务
+
 异常检测是数据分析中的一个重要任务，旨在识别不符合数据整体规律的样本。机器学习通过从正常数据中学习其规律和分布特征，构建模型来自动识别异常点。机器学习的异常检测可以分为**监督学习**、**无监督学习**和**半监督学习**三种模式
 
 1. **监督学习**：需要有标记的异常和正常样本数据，训练模型以识别未来数据中的异常点。这种方法在标记数据丰富时效果较佳，但标记异常数据通常较困难。
 2. **无监督学习**：不需要标记数据，仅利用正常数据的分布特点识别异常点，这在大多数实际场景中更为常见。
 3. **半监督学习**：只使用正常样本构建模型，以此为基准来判断未来样本是否为异常。
 
-常见的异常检测模型包括，具体原理请自行查阅相关资料：
+<img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241023153305355.png" alt="异常检测基本原理展示" style="zoom: 33%;" />
 
-1. **高斯模型（Gaussian Mixture Model, GMM）**
-2. **孤立森林（Isolation Forest）**
-3. **基于密度的方法（Density-Based Methods）**
-4. **主成分分析（Principal Component Analysis, PCA）**
-5. **支持向量机的单类分类（One-Class SVM）**
-6. **自编码器（Autoencoder）**
 
-其中数据说明
-
-| 变量      | 注释         |
-| --------- | ------------ |
-| X.npy     | 待标记点坐标 |
-| X_val.npy | 已标记点坐标 |
-| yval.npy  | 已标记点标签 |
-
-<img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241023153305355.png" alt="数据展示" style="zoom: 33%;" />
 
 ### 2.2 离散选择模型 （DCM）
+
+本次作业中给定的 **Dataset** 中包含了上海定制公交线路开关的面板数据，字段信息可参考[该论文](https://www.sciencedirect.com/science/article/pii/S2046043023001077)，其中 label 字段表示线路的开关状态。请建立多个模型，对比分析各字段对线路开关状态的影响因素。
+
+1. 利用离散选择库 [Biogeme](https://biogeme.epfl.ch/)构建合适的逻辑回归模型，分析特征显著性
+2. 基于树模型构建特征重要性的解释，例如Ada boost、[LightGBM](https://lightgbm.readthedocs.io/en/stable/)、[XGBoost](https://xgboost.readthedocs.io/en/stable/)、[CatBoost](https://catboost.ai/) 等
+3. 利用因果理论分析因果效应，至少实现以下一种方法：基于约束的因果关系发现或基于 Null importance 的因果反驳。
 
 **离散选择模型**是一种用于建模决策者在有限多个选项中进行选择的过程的统计工具。该模型基于效用最大化理论，假设每个可选项都带有一定的效用值，且决策者会偏好带来最高效用的选择。离散选择模型通常用于模拟和分析个体的选择行为，其典型模型包括：
 
@@ -261,13 +262,9 @@ Corner Problem 是一个典型的搜索问题，吃豆人需要经过四个角�
 
 
 
-本次作业中给定的 **Dataset** 中包含了上海定制公交线路开关的面板数据，字段信息可参考[该论文](https://www.sciencedirect.com/science/article/pii/S2046043023001077)，其中 label 字段表示线路的开关状态。请建立多个模型，对比分析各字段对线路开关状态的影响因素。
+### 2.3 工程代码 （Coding）
 
-1. 利用离散选择库 [Biogeme](https://biogeme.epfl.ch/)构建合适的逻辑回归模型，分析特征显著性
-2. 基于树模型构建特征重要性的解释，例如Ada boost、[LightGBM](https://lightgbm.readthedocs.io/en/stable/)、[XGBoost](https://xgboost.readthedocs.io/en/stable/)、[CatBoost](https://catboost.ai/) 等
-3. 利用因果理论分析因果效应，至少实现以下一种方法：基于约束的因果关系发现或基于 Null importance 的因果反驳。
 
-### 2.3 牛顿法迭代实现 （Newton）
 
 **牛顿法**（Newton’s method），又称**牛顿-拉弗森方法**（Newton-Raphson method），是一种用于求解实数域或复数域方程近似解的迭代方法。牛顿法的核心思想是利用函数在接近零点附近的切线来逼近零点，并通过反复迭代逐渐收敛到方程的根。具体步骤如下：
 
@@ -384,13 +381,18 @@ Corner Problem 是一个典型的搜索问题，吃豆人需要经过四个角�
 
 深度强化学习（Deep Reinforcement Learning, DRL）结合了强化学习和深度学习的优势，旨在训练智能体（agent）在与环境（environment）交互中不断学习策略，以最大化预期收益。DRL 在复杂的高维环境中应用深度神经网络（DNN）作为函数逼近器，使智能体能够从原始观测数据中直接学习出有效的策略。这一方法在机器人控制、游戏AI、自动驾驶等领域展现出强大的决策和适应能力。更多可以参考 CS185 课程
 
+
+
 ### 4.1 论文精读（Paper Review）
 
 DQN（深度 Q 网络）是经典的深度强化学习算法，针对 DQN 的诸多改进极大提升了其性能。为加深理解，建议阅读论文 [Rainbow: Combining Improvements in Deep Reinforcement Learning](https://arxiv.org/abs/1710.02298)，此文整合了 DQN 的多项增强技术，形成了更高效的强化学习算法。
 
 要求阅读和理解 Rainbow 的改进措施，以获得对深度强化学习更全面的认识。
 
+
+
 ### 4.2 基准实现（Baseline Implementation）
+
 在处理视频任务时，状态通常以图像帧的形式提供，因此可以通过将状态图像传入 CNN 模块进行特征提取，从而减少模型的参数量并提升网络的泛化性能。为此，我们需要对 Q-Network 进行以下修改：
 
 **引入卷积层（CNN）**
@@ -434,8 +436,6 @@ DQN（深度 Q 网络）是经典的深度强化学习算法，针对 DQN 的诸
 - [Gurobi](https://www.gurobi.com/)，是CPLEX团队创始人重新创建的商业求解器，和cplex速度差别不大，相对来说比Cplex好一点
 - [OR-Tools](https://github.com/google/or-tools)，谷歌开发的商业求解
 
-
-
 **近似求解**方法通常应用于 NP-hard 问题或超大规模优化问题，能够在合理时间内找到接近最优的解。尽管不保证全局最优性，但这类方法通常能提供可接受的解，适用于复杂的大规模问题。常见的近似求解方法包括：
 
 - **遗传算法**（Genetic Algorithm, GA）：基于自然选择和遗传机制的随机搜索算法，适用于多峰问题。
@@ -448,6 +448,8 @@ DQN（深度 Q 网络）是经典的深度强化学习算法，针对 DQN 的诸
 
 - [GeatPY](https://github.com/geatpy-dev/geatpy)  高性能的Python遗传和进化算法工具箱。
 
+  
+
 #### 5.1 投资优化（精确求解）
 
 假设你有 100 万美元要投资于三种资产（资产 1、资产 2 和资产 3），每种资产的预期回报率和风险如下表所示，
@@ -459,6 +461,8 @@ DQN（深度 Q 网络）是经典的深度强化学习算法，针对 DQN 的诸
 | 资产 3 | 8%         | 0.4      |
 
 目标是在总投资回报率不低于 105 的情况下，最小化总投资的风险，要求使用 Pyomo 建立并调用求解器优化该问题，输出每种资产的投资金额和最小化的风险值。
+
+
 
 #### 5.2 TSP 问题（近似求解）
 
